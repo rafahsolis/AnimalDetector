@@ -17,13 +17,17 @@ pip install ultralytics labelImg
 
 ## 6-Step Process (Simplified!)
 
-### Step 1: Create Dataset Folders (1 minute)
+### Step 1: Create Dataset Structure (30 seconds)
 ```bash
-mkdir -p datasets/animal_dataset/images
-mkdir -p datasets/animal_dataset/labels
+python -m yolo.create_dataset_structure --dataset animal_dataset
 ```
 
-Put all your images in `datasets/animal_dataset/images/`
+This automatically creates:
+- `datasets/animal_dataset/images/` (for your images)
+- `datasets/animal_dataset/labels/` (for annotations)
+- `datasets/animal_dataset/README.md` (instructions)
+
+Now put all your images in `datasets/animal_dataset/images/`
 
 ### Step 2: Annotate Images (Most Time-Consuming)
 

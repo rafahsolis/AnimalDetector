@@ -3,6 +3,7 @@ from typing import List, Tuple
 import random
 import shutil
 import logging
+import argparse
 
 logger = logging.getLogger(__name__)
 
@@ -38,8 +39,10 @@ class SplitRatios:
 
 
 class DatasetPaths:
-    def __init__(self, dataset_root: Path) -> None:
-        self._dataset_root = dataset_root
+    DATASETS_ROOT = Path('datasets')
+
+    def __init__(self, dataset_name: str) -> None:
+        self._dataset_root = self.DATASETS_ROOT / dataset_name
 
     @property
     def images_source(self) -> Path:
@@ -236,16 +239,35 @@ def create_default_ratios() -> SplitRatios:
     return SplitRatios(train=0.7, val=0.15, test=0.15)
 
 
-def create_dataset_paths() -> DatasetPaths:
-    dataset_root = Path("datasets/animal_dataset")
-    return DatasetPaths(dataset_root)
+def create_dataset_paths(dataset_name: str) -> DatasetPaths:
+    return DatasetPaths(dataset_name)
+
+
+def parse_arguments() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description='Split dataset into train/val/test sets'
+    )
+    parser.add_argument(
+        '--dataset',
+        type=str,
+        default='image_dataset',
+        help='Name of the dataset (default: image_dataset)'
+    )
+    parser.add_argument(
+        '--seed',
+        type=int,
+        default=42,
+        help='Random seed for reproducible splits (default: 42)'
+    )
+    return parser.parse_args()
 
 
 def main() -> None:
-    paths = create_dataset_paths()
+    args = parse_arguments()
+    paths = create_dataset_paths(args.dataset)
     ratios = create_default_ratios()
-    splitter = DatasetSplitter(paths, ratios, random_seed=42)
-    
+    splitter = DatasetSplitter(paths, ratios, random_seed=args.seed)
+
     try:
         splitter.split()
         print("\n✓ Dataset split completed successfully!")

@@ -30,7 +30,7 @@ LOGGING = {
         },
         'file': {
             'class': 'logging.FileHandler',
-            'filename': 'animal_detector.log',
+            'filename': 'logs/animal_detector.log',
             'formatter': 'verbose',
             'level': 'DEBUG',
         },

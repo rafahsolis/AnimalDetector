@@ -43,23 +43,23 @@ This project supports all YOLO models from both **YOLOv8** and **YOLO11** famili
 
 ### Download all detection models (default)
 ```bash
-python download_models.py
+python -m yolo.download_models
 ```
 
 ### Download specific model
 ```bash
-python download_models.py yolov8m.pt
-python download_models.py yolo11l-seg.pt
+python -m yolo.download_models yolov8m.pt
+python -m yolo.download_models yolo11l-seg.pt
 ```
 
 ### Download by category
 ```bash
-python download_models.py --detection        # All detection models
-python download_models.py --segmentation     # All segmentation models
-python download_models.py --pose             # All pose models
-python download_models.py --classification   # All classification models
-python download_models.py --obb              # All OBB models
-python download_models.py --all              # ALL 50 models (warning: ~5GB+ total)
+python -m yolo.download_models --detection        # All detection models
+python -m yolo.download_models --segmentation     # All segmentation models
+python -m yolo.download_models --pose             # All pose models
+python -m yolo.download_models --classification   # All classification models
+python -m yolo.download_models --obb              # All OBB models
+python -m yolo.download_models --all              # ALL 50 models (warning: ~5GB+ total)
 ```
 
 ## Using Models in Code

@@ -35,9 +35,9 @@ datasets/animal_dataset/
 3. **docs/TRAINING_FAQ.md** - 50+ frequently asked questions with answers
 
 ### 🔧 Helper Scripts
-1. **create_dataset_structure.py** - Creates the dataset folder structure
-2. **train_model.py** - Ready-to-use training script
-3. **validate_dataset.py** - Validates your dataset before training
+1. **yolo/create_dataset_structure.py** - Creates the dataset folder structure
+2. **yolo/train_model.py** - Ready-to-use training script
+3. **yolo/validate_dataset.py** - Validates your dataset before training
 
 ### 📦 Updated Files
 - **requirements.txt** - Added `labelImg` and `PyYAML`
@@ -104,17 +104,17 @@ path: /home/rafa/PycharmProjects/AnimalDetector/datasets/animal_dataset
 ### Step 5: Validate and Train
 ```bash
 # Validate your dataset
-python validate_dataset.py
+python -m yolo.validate_dataset
 
 # If validation passes, start training!
-python train_model.py
+python -m yolo.train_model
 ```
 
 ---
 
 ## 📊 Training Configuration
 
-The `train_model.py` script is pre-configured with sensible defaults:
+The `yolo/train_model.py` script is pre-configured with sensible defaults:
 
 ```python
 # Base model: yolo11n.pt (fast, good for testing)
@@ -124,7 +124,7 @@ The `train_model.py` script is pre-configured with sensible defaults:
 # Device: "0" (GPU 0, change to "cpu" if no GPU)
 ```
 
-**To customize**, edit the functions in `train_model.py`:
+**To customize**, edit the functions in `yolo/train_model.py`:
 - `create_training_configuration()` - Change model, dataset path, device
 - `create_training_parameters()` - Change epochs, image_size, batch_size
 
@@ -179,10 +179,10 @@ cat docs/TRAINING_FAQ.md
 ### Common Issues
 
 **"CUDA out of memory"**
-→ Edit `train_model.py`, reduce `batch_size = 8` or `batch_size = 4`
+→ Edit `yolo/train_model.py`, reduce `batch_size = 8` or `batch_size = 4`
 
 **"No labels found"**
-→ Run `python validate_dataset.py` to check your dataset
+→ Run `python -m yolo.validate_dataset` to check your dataset
 
 **Training is very slow**
 → Ensure GPU is enabled, check `DEVICE = "0"` in script
@@ -221,7 +221,7 @@ Each label file contains one line per animal in the image:
 2. **Quality > Quantity**: 500 good images > 2000 poor images
 3. **Variety**: Different angles, lighting, distances, backgrounds
 4. **Consistency**: Annotate similarly across all images
-5. **Validation**: Always run `validate_dataset.py` before training
+5. **Validation**: Always run `yolo/validate_dataset.py` before training
 6. **Monitor**: Watch the training output, check if losses decrease
 7. **Evaluate**: Review `results.png` and `confusion_matrix.png`
 8. **Iterate**: Train → Evaluate → Add more data → Retrain
@@ -235,8 +235,8 @@ Each label file contains one line per animal in the image:
 3. [ ] Annotate images using labelImg or Roboflow
 4. [ ] Organize images into train/val/test folders
 5. [ ] Copy and edit `data.yaml`
-6. [ ] Run validation: `python validate_dataset.py`
-7. [ ] Start training: `python train_model.py`
+6. [ ] Run validation: `python -m yolo.validate_dataset`
+7. [ ] Start training: `python -m yolo.train_model`
 8. [ ] Check results in `runs/detect/train/`
 9. [ ] Update settings to use your trained model
 10. [ ] Test on new images!
@@ -247,7 +247,7 @@ Each label file contains one line per animal in the image:
 
 ```bash
 # Setup
-python create_dataset_structure.py
+python -m yolo.create_dataset_structure
 
 # Annotation
 labelImg

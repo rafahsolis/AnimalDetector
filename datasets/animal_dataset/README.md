@@ -21,7 +21,7 @@ animal_dataset/
 4. **Add labels** to train/labels/, val/labels/, test/labels/
    - Each image needs a matching label file (same name, .txt extension)
 5. **Verify** that class IDs in labels match those in data.yaml
-6. **Run training** using train_model.py
+6. **Run training** using yolo/train_model.py
 ## Label Format
 Each label file is a text file with one line per object:
 \`\`\`

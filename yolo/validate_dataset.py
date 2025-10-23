@@ -173,7 +173,7 @@ def main() -> None:
     dataset_root = Path("datasets/animal_dataset")
     if not dataset_root.exists():
         print(f"❌ Dataset not found at: {dataset_root}")
-        print("Run: python create_dataset_structure.py")
+        print("Run: python -m yolo.create_dataset_structure")
         return
     validator = DatasetValidator(dataset_root)
     is_valid = validator.validate()

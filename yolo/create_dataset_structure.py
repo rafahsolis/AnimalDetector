@@ -47,7 +47,7 @@ animal_dataset/
 4. **Add labels** to train/labels/, val/labels/, test/labels/
    - Each image needs a matching label file (same name, .txt extension)
 5. **Verify** that class IDs in labels match those in data.yaml
-6. **Run training** using train_model.py
+6. **Run training** using yolo/train_model.py
 ## Label Format
 Each label file is a text file with one line per object:
 \`\`\`
@@ -78,7 +78,7 @@ Make sure to select YOLO format when exporting!
         print("  1. Copy data.yaml.example to data.yaml")
         print("  2. Edit data.yaml with your absolute paths")
         print("  3. Add annotated images and labels")
-        print("  4. Run: python train_model.py")
+        print("  4. Run: python -m yolo.train_model")
 def main() -> None:
     dataset_root = Path("datasets/animal_dataset")
     creator = DatasetStructureCreator(dataset_root)

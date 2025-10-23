@@ -3,14 +3,14 @@
 Script to download YOLO models to the yolo/models directory.
 
 Usage:
-    python download_models.py                    # Download all detection models (v8 and v11, all sizes)
-    python download_models.py yolov8n.pt         # Download specific model
-    python download_models.py --all              # Download ALL available models (detection, seg, pose, cls, obb)
-    python download_models.py --detection        # Download all detection models
-    python download_models.py --segmentation     # Download all segmentation models
-    python download_models.py --pose             # Download all pose models
-    python download_models.py --classification   # Download all classification models
-    python download_models.py --obb              # Download all OBB models
+    python -m yolo.download_models                    # Download all detection models (v8 and v11, all sizes)
+    python -m yolo.download_models yolov8n.pt         # Download specific model
+    python -m yolo.download_models --all              # Download ALL available models (detection, seg, pose, cls, obb)
+    python -m yolo.download_models --detection        # Download all detection models
+    python -m yolo.download_models --segmentation     # Download all segmentation models
+    python -m yolo.download_models --pose             # Download all pose models
+    python -m yolo.download_models --classification   # Download all classification models
+    python -m yolo.download_models --obb              # Download all OBB models
 """
 import sys
 import logging

@@ -215,7 +215,7 @@ names:
 Create and run the training script:
 
 ```bash
-python train_model.py
+python -m yolo.train_model
 ```
 
 The script handles all training configuration and saves results automatically.
@@ -460,7 +460,7 @@ batch_size = 8  # or 4, or even 1
 - [ ] Organize into train/val/test splits (70/15/15)
 - [ ] Create data.yaml configuration file
 - [ ] Verify dataset structure matches required format
-- [ ] Download base model: `python download_models.py`
+- [ ] Download base model: `python -m yolo.download_models`
 - [ ] Create and run training script
 - [ ] Monitor training progress (losses decreasing)
 - [ ] Evaluate model on test set

@@ -74,7 +74,7 @@ This helps the model learn to detect animals in real-world scenarios.
 ### Q: Training stopped with "CUDA out of memory", what do I do?
 **A:** Reduce memory usage:
 ```python
-# In train_model.py, reduce batch_size
+# In yolo/train_model.py, reduce batch_size
 batch_size = 8  # Try 8, 4, or even 1
 ```
 Or use a smaller model (yolo11n instead of yolo11l).
@@ -100,7 +100,7 @@ Check `runs/detect/train/results.png` for visualization.
 - Fewer epochs
 - Regularization (dropout, already in YOLO)
 ### Q: Can I resume training if it stops?
-**A:** Yes! YOLO saves checkpoints. Modify train_model.py:
+**A:** Yes! YOLO saves checkpoints. Modify yolo/train_model.py:
 ```python
 # Load the last checkpoint
 model_path = Path("runs/detect/train/weights/last.pt")
@@ -219,7 +219,7 @@ Then run: `python main.py`
 ## Getting Help
 If you're still stuck:
 1. **Check logs**: `logs/animal_detector.log`
-2. **Validate dataset**: `python validate_dataset.py`
+2. **Validate dataset**: `python -m yolo.validate_dataset`
 3. **Review training output**: Look for error messages
 4. **Check documentation**: `docs/TRAINING_GUIDE.md`
 5. **Verify structure**: Ensure folders match required format
@@ -233,10 +233,10 @@ If you're still stuck:
 ```
 **Quick training command:**
 ```bash
-python create_dataset_structure.py  # Setup
+python -m yolo.create_dataset_structure  # Setup
 labelImg                            # Annotate
-python validate_dataset.py          # Verify
-python train_model.py               # Train
+python -m yolo.validate_dataset          # Verify
+python -m yolo.train_model               # Train
 ```
 **After training:**
 ```bash

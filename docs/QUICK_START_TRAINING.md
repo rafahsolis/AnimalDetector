@@ -7,7 +7,7 @@ pip install ultralytics labelImg
 ## 5-Step Process
 ### Step 1: Create Dataset Structure (2 minutes)
 ```bash
-python create_dataset_structure.py
+python -m yolo.create_dataset_structure
 ```
 This creates the required folders:
 ```
@@ -51,14 +51,14 @@ path: /home/rafa/PycharmProjects/AnimalDetector/datasets/animal_dataset
 ```
 ### Step 4: Download Base Model (1 minute)
 ```bash
-python download_models.py
+python -m yolo.download_models
 ```
 ### Step 5: Train! (Hours to Days)
 ```bash
-python train_model.py
+python -m yolo.train_model
 ```
 **Training Options:**
-Edit `train_model.py` to customize:
+Edit `yolo/train_model.py` to customize:
 ```python
 def create_training_parameters() -> TrainingParameters:
     epochs = 50        # Try 50 first, then increase

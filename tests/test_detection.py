@@ -46,7 +46,9 @@ class AnimalDetectorTest(unittest.TestCase):
         mock_box = Mock()
         mock_box.cls = [0]
         mock_box.conf = [0.85]
-        mock_box.xyxy = [[100, 100, 200, 200]]
+        mock_xyxy = Mock()
+        mock_xyxy.tolist.return_value = [100, 100, 200, 200]
+        mock_box.xyxy = [mock_xyxy]
         return mock_box
 
 

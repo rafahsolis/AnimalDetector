@@ -10,10 +10,10 @@ logger = logging.getLogger(__name__)
 
 class SplitRatios:
     def __init__(
-        self,
-        train: float = 0.7,
-        val: float = 0.15,
-        test: float = 0.15
+            self,
+            train: float = 0.7,
+            val: float = 0.15,
+            test: float = 0.15
     ) -> None:
         self._train = train
         self._val = val
@@ -86,12 +86,12 @@ class ImageFileFinder:
     def find_all_images(self) -> List[Path]:
         if not self._source_path.exists():
             return []
-        
+
         images = []
         for file_path in self._source_path.iterdir():
             if self._is_image_file(file_path):
                 images.append(file_path)
-        
+
         return sorted(images)
 
     def _is_image_file(self, file_path: Path) -> bool:
@@ -100,10 +100,10 @@ class ImageFileFinder:
 
 class DatasetSplitter:
     def __init__(
-        self,
-        paths: DatasetPaths,
-        ratios: SplitRatios,
-        random_seed: int = 42
+            self,
+            paths: DatasetPaths,
+            ratios: SplitRatios,
+            random_seed: int = 42
     ) -> None:
         self._paths = paths
         self._ratios = ratios
@@ -113,10 +113,10 @@ class DatasetSplitter:
         self._validate_source_folders()
         self._clear_destination_folders()
         self._create_destination_folders()
-        
+
         images = self._get_images_to_split()
         self._shuffle_images(images)
-        
+
         splits = self._calculate_split_indices(len(images))
         self._move_files_to_splits(images, splits)
         self._log_summary(len(images), splits)
@@ -136,7 +136,7 @@ class DatasetSplitter:
             self._paths.test_images,
             self._paths.test_labels,
         ]
-        
+
         for folder in folders_to_clear:
             if folder.exists():
                 shutil.rmtree(folder)
@@ -150,19 +150,19 @@ class DatasetSplitter:
             self._paths.test_images,
             self._paths.test_labels,
         ]
-        
+
         for folder in folders_to_create:
             folder.mkdir(parents=True, exist_ok=True)
 
     def _get_images_to_split(self) -> List[Path]:
         finder = ImageFileFinder(self._paths.images_source)
         images = finder.find_all_images()
-        
+
         if not images:
             raise ValueError(
                 f"No images found in {self._paths.images_source}"
             )
-        
+
         return images
 
     def _shuffle_images(self, images: List[Path]) -> None:
@@ -175,12 +175,12 @@ class DatasetSplitter:
         return train_end, val_end
 
     def _move_files_to_splits(
-        self,
-        images: List[Path],
-        splits: Tuple[int, int]
+            self,
+            images: List[Path],
+            splits: Tuple[int, int]
     ) -> None:
         train_end, val_end = splits
-        
+
         self._move_image_batch(
             images[:train_end],
             self._paths.train_images,
@@ -198,10 +198,10 @@ class DatasetSplitter:
         )
 
     def _move_image_batch(
-        self,
-        images: List[Path],
-        dest_images: Path,
-        dest_labels: Path
+            self,
+            images: List[Path],
+            dest_images: Path,
+            dest_labels: Path
     ) -> None:
         for image in images:
             self._move_image_file(image, dest_images)
@@ -214,11 +214,11 @@ class DatasetSplitter:
     def _move_label_file(self, image: Path, destination: Path) -> None:
         label_name = image.stem + '.txt'
         label_path = self._paths.labels_source / label_name
-        
+
         if not label_path.exists():
             logger.warning(f"Label not found for {image.name}")
             return
-        
+
         dest_path = destination / label_name
         shutil.copy2(str(label_path), str(dest_path))
 
@@ -227,11 +227,11 @@ class DatasetSplitter:
         train_count = train_end
         val_count = val_end - train_end
         test_count = total - val_end
-        
+
         logger.info(f"Dataset split completed:")
-        logger.info(f"  Train: {train_count} images ({train_count/total*100:.1f}%)")
-        logger.info(f"  Val:   {val_count} images ({val_count/total*100:.1f}%)")
-        logger.info(f"  Test:  {test_count} images ({test_count/total*100:.1f}%)")
+        logger.info(f"  Train: {train_count} images ({train_count / total * 100:.1f}%)")
+        logger.info(f"  Val:   {val_count} images ({val_count / total * 100:.1f}%)")
+        logger.info(f"  Test:  {test_count} images ({test_count / total * 100:.1f}%)")
         logger.info(f"  Total: {total} images")
 
 
@@ -289,4 +289,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

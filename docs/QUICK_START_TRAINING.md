@@ -1,6 +1,14 @@
 # Quick Start: Train Your Animal Detection Model
 This is a condensed guide to get you training as quickly as possible.
 ## Prerequisites
+
+**System Dependencies (Linux only):**
+```bash
+sudo apt-get update
+sudo apt-get install -y libxcb-xinerama0 libxcb-cursor0 libxkbcommon-x11-0
+```
+
+**Python Dependencies:**
 ```bash
 pip install ultralytics labelImg
 ```
@@ -109,6 +117,12 @@ python main.py
 | GPU VRAM | 4GB | 8GB+ |
 | Training time | 2-4 hours | Varies |
 ## Common Issues
+**"Could not load Qt platform plugin xcb" (labelImg error on Linux)**
+→ Install system dependencies:
+```bash
+sudo apt-get install -y libxcb-xinerama0 libxcb-cursor0 libxkbcommon-x11-0
+```
+
 **"CUDA out of memory"**
 → Reduce batch_size to 4 or 8
 **"No labels found"**

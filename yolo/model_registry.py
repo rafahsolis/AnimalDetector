@@ -77,3 +77,4 @@ class ModelRegistry:
 
     def ensure_models_directory_exists(self) -> None:
         self._models_dir.mkdir(parents=True, exist_ok=True)
+

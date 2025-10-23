@@ -9,13 +9,16 @@ from yolo.yolo import (
     AnimalDetectionPipeline
 )
 from simple_settings import settings
+from yolo.logger_config import configure_logging, get_logger
+
+configure_logging()
+logger = get_logger('main')
 
 
-def print_gpu_status(gpu_available: bool) -> None:
-    print("=" * 50)
-    print("GPU Configuration Check")
-    print("=" * 50)
-    print("=" * 50)
+def log_gpu_status() -> None:
+    logger.info("=" * 50)
+    logger.info("GPU Configuration Check")
+    logger.info("=" * 50)
 
 
 def get_device_name(device: str) -> str:
@@ -25,20 +28,22 @@ def get_device_name(device: str) -> str:
 
 
 def main() -> None:
+    log_gpu_status()
     gpu_available = check_gpu_availability()
-    print_gpu_status(gpu_available)
+    logger.info("=" * 50)
 
     device = settings.DEVICE if gpu_available else 'cpu'
-    print(f"\nUsing device: {get_device_name(device)}\n")
+    device_name = get_device_name(device)
+    logger.info(f"Using device: {device_name}")
 
     loader = ImageLoader(settings.IMAGE_FOLDER)
     detector = AnimalDetector(settings.MODEL_PATH, device=device)
-    logger = ResultLogger(settings.LOG_FILE)
+    result_logger = ResultLogger(settings.LOG_FILE)
 
-    pipeline = AnimalDetectionPipeline(loader, detector, logger)
+    pipeline = AnimalDetectionPipeline(loader, detector, result_logger)
     pipeline.run()
 
-    print("\nDetection completed successfully!")
+    logger.info("Detection completed successfully!")
 
 
 if __name__ == "__main__":

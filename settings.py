@@ -1,33 +1,53 @@
 from pathlib import Path
 
-BASE_DIR = Path(__file__).parent
 
-DEVICE = "0"
-
-MODEL_PATH = "yolov11l.pt"
-
-IMAGE_FOLDER = Path("/mnt/nextcloud/TrailCams")
-
-LOG_FILE = BASE_DIR / "detections.csv"
-
-DATASET_PATH = Path("/mnt/nextcloud/YOLODataset")
-
-TRAINING_EPOCHS = 100
-
-TRAINING_IMAGE_SIZE = 640
-
-MODEL_ARCHITECTURE = "yolov8n.yaml"
-
-TARGET_ANIMALS = [
-    "rabbit",
-    "fox",
-    "wild_boar",
-    "bird",
-    "deer",
-    "cat",
-    "dog",
-]
-
+VERBOSE_OUTPUT = True
+DEVICE = '0'
+IMAGE_FOLDER = Path('images')
+MODEL_PATH = 'yolov8n.pt'
+LOG_FILE = Path('results.csv')
 DETECTION_CONFIDENCE_THRESHOLD = 0.25
 
-VERBOSE_OUTPUT = False
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S',
+        },
+        'simple': {
+            'format': '%(levelname)s - %(message)s',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+            'level': 'INFO',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': 'animal_detector.log',
+            'formatter': 'verbose',
+            'level': 'DEBUG',
+        },
+    },
+    'root': {
+        'handlers': ['console', 'file'],
+        'level': 'DEBUG',
+    },
+    'loggers': {
+        'yolo': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'main': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
+

@@ -1,7 +1,13 @@
-import os
-from simple_settings import LazySettings
+from yolo.detection import AnimalDetector
+from yolo.training import ModelTrainer
+from yolo.model_registry import ModelRegistry, YoloModelVersion
+from yolo.model_downloader import ModelDownloader
 
-os.environ.setdefault('SIMPLE_SETTINGS', 'settings,settings_local')
-
-settings = LazySettings('settings', 'settings_local')
+__all__ = [
+    'AnimalDetector',
+    'ModelTrainer',
+    'ModelRegistry',
+    'YoloModelVersion',
+    'ModelDownloader'
+]
 

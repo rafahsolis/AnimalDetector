@@ -4,7 +4,8 @@ from pathlib import Path
 VERBOSE_OUTPUT = True
 DEVICE = '0'
 IMAGE_FOLDER = Path('images')
-MODEL_PATH = 'yolov8n.pt'
+MODELS_DIR = Path('yolo/models')
+MODEL_PATH = MODELS_DIR / 'yolov8n.pt'
 LOG_FILE = Path('results.csv')
 DETECTION_CONFIDENCE_THRESHOLD = 0.25
 TARGET_ANIMALS = ["rabbit", "fox", "wild_boar", "bird"]

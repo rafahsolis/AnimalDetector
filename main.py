@@ -1,37 +1,56 @@
-import os
-os.environ.setdefault('SIMPLE_SETTINGS', 'settings,settings_local')
+from pathlib import Path
+import logging.config
+from settings import LOGGING, MODEL_PATH, IMAGE_FOLDER, DEVICE, DETECTION_CONFIDENCE_THRESHOLD, TARGET_ANIMALS
+from yolo import AnimalDetector
 
-from gpu.gpu import check_gpu_availability, get_device_name, log_gpu_status_header
-from yolo.yolo import (
-    ImageLoader,
-    AnimalDetector,
-    ResultLogger,
-    AnimalDetectionPipeline
-)
-from simple_settings import settings
-from logger.config import configure_logging, get_logger
+logging.config.dictConfig(LOGGING)
+logger = logging.getLogger('main')
 
-configure_logging()
-logger = get_logger('main')
+
+class ImageProcessor:
+    def __init__(self, detector: AnimalDetector, image_folder: Path) -> None:
+        self._detector = detector
+        self._image_folder = image_folder
+
+    def process_all_images(self) -> None:
+        image_paths = self._get_all_image_paths()
+        for image_path in image_paths:
+            self._process_single_image(image_path)
+
+    def _get_all_image_paths(self) -> list[Path]:
+        return list(self._image_folder.glob("*.jpg")) + list(self._image_folder.glob("*.png"))
+
+    def _process_single_image(self, image_path: Path) -> None:
+        logger.info(f"Processing image: {image_path}")
+        detections = self._detector.detect_animals_in_image(image_path, TARGET_ANIMALS)
+        self._log_detections(image_path, detections)
+
+    def _log_detections(self, image_path: Path, detections: list) -> None:
+        if detections:
+            logger.info(f"Found {len(detections)} animals in {image_path.name}")
+            for detection in detections:
+                self._log_single_detection(detection)
+        else:
+            logger.info(f"No target animals found in {image_path.name}")
+
+    def _log_single_detection(self, detection: dict) -> None:
+        logger.info(f"  - {detection['class_name']}: {detection['confidence']:.2f}")
+
+
+def create_detector() -> AnimalDetector:
+    detector = AnimalDetector(MODEL_PATH, DEVICE, DETECTION_CONFIDENCE_THRESHOLD)
+    detector.load_model()
+    return detector
 
 
 def main() -> None:
-    log_gpu_status_header()
-    gpu_available = check_gpu_availability()
-    logger.info("=" * 50)
+    logger.info("Starting Animal Detector")
 
-    device = settings.DEVICE if gpu_available else 'cpu'
-    device_name = get_device_name(device)
-    logger.info(f"Using device: {device_name}")
+    detector = create_detector()
+    processor = ImageProcessor(detector, IMAGE_FOLDER)
+    processor.process_all_images()
 
-    loader = ImageLoader(settings.IMAGE_FOLDER)
-    detector = AnimalDetector(settings.MODEL_PATH, device=device)
-    result_logger = ResultLogger(settings.LOG_FILE)
-
-    pipeline = AnimalDetectionPipeline(loader, detector, result_logger)
-    pipeline.run()
-
-    logger.info("Detection completed successfully!")
+    logger.info("Processing complete")
 
 
 if __name__ == "__main__":

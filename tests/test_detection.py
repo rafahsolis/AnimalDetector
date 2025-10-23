@@ -42,7 +42,8 @@ class AnimalDetectorTest(unittest.TestCase):
         mock_result.names = {0: "rabbit"}
         return mock_result
 
-    def _create_mock_box(self):
+    @staticmethod
+    def _create_mock_box():
         mock_box = Mock()
         mock_box.cls = [0]
         mock_box.conf = [0.85]

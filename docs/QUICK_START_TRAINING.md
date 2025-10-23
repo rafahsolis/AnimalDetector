@@ -4,7 +4,7 @@ This is a condensed guide to get you training as quickly as possible.
 ```bash
 pip install ultralytics labelImg
 ```
-## 5-Step Process
+## 6-Step Process
 ### Step 1: Create Dataset Structure (2 minutes)
 ```bash
 python -m yolo.create_dataset_structure
@@ -58,12 +58,15 @@ python -m yolo.download_models
 python -m yolo.train_model
 ```
 **Training Options:**
-Edit `yolo/train_model.py` to customize:
+Edit the `create_training_parameters()` function in `yolo/train_model.py`:
 ```python
+# In yolo/train_model.py, find and modify this function:
+
 def create_training_parameters() -> TrainingParameters:
-    epochs = 50        # Try 50 first, then increase
+    epochs = 50        # Try 50 first, then increase to 100+
     image_size = 640   # Use 640 for speed, 1280 for accuracy
     batch_size = 16    # Reduce to 8 or 4 if GPU memory error
+    
     return TrainingParameters(epochs, image_size, batch_size)
 ```
 **GPU Memory Issues?**

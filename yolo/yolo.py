@@ -2,44 +2,12 @@ from pathlib import Path
 from typing import List
 import cv2
 import numpy as np
-import torch
 from ultralytics import YOLO
 from simple_settings import settings
-from yolo.logger_config import get_logger
+from logger.config import get_logger
 
 logger = get_logger('yolo')
 
-
-def check_gpu_availability() -> bool:
-    is_available = torch.cuda.is_available()
-    if settings.VERBOSE_OUTPUT:
-        _log_pytorch_version()
-        _log_cuda_status(is_available)
-    return is_available
-
-
-def _log_pytorch_version() -> None:
-    logger.info(f"PyTorch version: {torch.__version__}")
-
-
-def _log_cuda_status(is_available: bool) -> None:
-    logger.info(f"CUDA available: {is_available}")
-    if is_available:
-        _log_cuda_info()
-    else:
-        _log_cuda_warning()
-
-
-def _log_cuda_info() -> None:
-    logger.info(f"CUDA version: {torch.version.cuda}")
-    logger.info(f"GPU count: {torch.cuda.device_count()}")
-    logger.info(f"GPU name: {torch.cuda.get_device_name(0)}")
-    memory_mb = torch.cuda.memory_allocated(0) / 1024**2
-    logger.info(f"Current GPU memory allocated: {memory_mb:.2f} MB")
-
-
-def _log_cuda_warning() -> None:
-    logger.warning("CUDA not available. Running on CPU.")
 
 
 class ImageLoader:
@@ -153,6 +121,7 @@ class AnimalDetectionPipeline:
     def __init__(self, loader: ImageLoader, detector: AnimalDetector, result_logger: ResultLogger) -> None:
         self.loader = loader
         self.detector = detector
+        self.logger = result_logger
         self.result_logger = result_logger
 
     def run(self) -> None:
@@ -167,25 +136,4 @@ class AnimalDetectionPipeline:
         detections = self.detector.detect(image_path)
         self.result_logger.save(image_path, detections)
 
-
-if __name__ == "__main__":
-    from yolo.logger_config import configure_logging
-    configure_logging()
-
-    logger.info("=" * 50)
-    logger.info("GPU Configuration Check")
-    logger.info("=" * 50)
-    gpu_available = check_gpu_availability()
-    logger.info("=" * 50)
-
-    device = settings.DEVICE if gpu_available else 'cpu'
-    device_name = 'GPU (cuda:0)' if device == '0' else 'CPU'
-    logger.info(f"Using device: {device_name}")
-
-    loader = ImageLoader(settings.IMAGE_FOLDER)
-    detector = AnimalDetector(settings.MODEL_PATH, device=device)
-    result_logger = ResultLogger(settings.LOG_FILE)
-
-    pipeline = AnimalDetectionPipeline(loader, detector, result_logger)
-    pipeline.run()
 

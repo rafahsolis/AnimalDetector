@@ -7,6 +7,7 @@ IMAGE_FOLDER = Path('images')
 MODEL_PATH = 'yolov8n.pt'
 LOG_FILE = Path('results.csv')
 DETECTION_CONFIDENCE_THRESHOLD = 0.25
+TARGET_ANIMALS = ["rabbit", "fox", "wild_boar", "bird"]
 
 LOGGING = {
     'version': 1,

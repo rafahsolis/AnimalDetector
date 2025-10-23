@@ -3,7 +3,7 @@ import os
 os.environ.setdefault('SIMPLE_SETTINGS', 'settings,settings_local')
 
 import torch
-from yolo.yolo import check_gpu_availability
+from gpu.gpu import check_gpu_availability
 
 
 class GpuAvailabilityTest(unittest.TestCase):

@@ -1,34 +1,22 @@
 import os
 os.environ.setdefault('SIMPLE_SETTINGS', 'settings,settings_local')
 
+from gpu.gpu import check_gpu_availability, get_device_name, log_gpu_status_header
 from yolo.yolo import (
-    check_gpu_availability,
     ImageLoader,
     AnimalDetector,
     ResultLogger,
     AnimalDetectionPipeline
 )
 from simple_settings import settings
-from yolo.logger_config import configure_logging, get_logger
+from logger.config import configure_logging, get_logger
 
 configure_logging()
 logger = get_logger('main')
 
 
-def log_gpu_status() -> None:
-    logger.info("=" * 50)
-    logger.info("GPU Configuration Check")
-    logger.info("=" * 50)
-
-
-def get_device_name(device: str) -> str:
-    if device == '0':
-        return 'GPU (cuda:0)'
-    return 'CPU'
-
-
 def main() -> None:
-    log_gpu_status()
+    log_gpu_status_header()
     gpu_available = check_gpu_availability()
     logger.info("=" * 50)
 

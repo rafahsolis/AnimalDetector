@@ -1,0 +1,23 @@
+2025-10-23 13:27:30 - main - INFO - ==================================================
+GPU Configuration Check
+==================================================
+2025-10-23 13:27:30 - gpu - INFO - PyTorch version: 2.9.0+cu128
+2025-10-23 13:27:30 - gpu - INFO - CUDA available: True
+2025-10-23 13:27:30 - gpu - INFO - CUDA version: 12.8
+GPU count: 1
+GPU name: NVIDIA GeForce RTX 3060 Ti
+Current GPU memory allocated: 0.00 MB
+2025-10-23 13:27:30 - main - INFO - ==================================================
+2025-10-23 13:27:30 - main - INFO - Using device: GPU (cuda:0)
+2025-10-23 14:21:10 - main - INFO - ==================================================
+GPU Configuration Check
+==================================================
+2025-10-23 14:21:10 - gpu - INFO - PyTorch version: 2.9.0+cu128
+2025-10-23 14:21:10 - gpu - INFO - CUDA available: True
+2025-10-23 14:21:10 - gpu - INFO - CUDA version: 12.8
+GPU count: 1
+GPU name: NVIDIA GeForce RTX 3060 Ti
+Current GPU memory allocated: 0.00 MB
+2025-10-23 14:21:10 - main - INFO - ==================================================
+2025-10-23 14:21:10 - main - INFO - Using device: GPU (cuda:0)
+2025-10-23 14:21:10 - main - INFO - Detection completed successfully!

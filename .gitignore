@@ -38,7 +38,7 @@ settings_local.py
 detections.csv
 runs/
 *.pt
-!yolov*.pt
+!yolo/models/*.pt
 
 # OS
 .DS_Store

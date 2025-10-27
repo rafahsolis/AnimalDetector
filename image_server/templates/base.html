@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang='en'>
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width,initial-scale=1'>
+  <title>Image Browser</title>
+  <style>
+    :root{--bg:#0b1020;--muted:#9aa0aa;--text:#e5e7eb;}
+    body{margin:0;background:#0b1020;color:var(--text);font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+    header{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid #1f2937;background:rgba(0,0,0,.25)}
+    h1{font-size:16px;margin:0;color:#cbd5e1}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;padding:14px}
+    .card{display:flex;flex-direction:column;gap:8px;text-decoration:none;color:inherit;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:10px;transition:transform .06s,background .2s}
+    .card:hover{background:rgba(255,255,255,.06);transform:translateY(-1px)}
+    .card img{width:100%;height:150px;object-fit:cover;border-radius:8px}
+    .viewer{position:relative;min-height:70vh;display:grid;place-items:center;padding:10px}
+    .viewer img{max-width:95vw;max-height:75vh;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.35)}
+    .nav{position:absolute;top:50%;transform:translateY(-50%);font-size:26px;text-decoration:none;color:#e5e7eb;background:rgba(0,0,0,.35);padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.1)}
+    .nav.prev{left:12px}
+    .nav.next{right:12px}
+    .toolbar{display:flex;gap:8px;align-items:center;justify-content:center;padding:12px;border-top:1px solid #1f2937}
+    .btn{appearance:none;border:1px solid rgba(255,255,255,.12);background:#0b1220;color:#e7e7eb;padding:8px 12px;border-radius:10px;text-decoration:none;cursor:pointer}
+    .btn.danger{background:linear-gradient(180deg,#ef4444,#b91c1c);border-color:rgba(0,0,0,.25)}
+    footer{padding:10px 14px;color:#9aa0aa;border-top:1px solid #1f2937;text-align:center}
+    .muted{color:#9aa0aa;font-size:12px}
+    .spacer{flex:1}
+    .crumb{font-size:13px;color:#cbd5e1;max-width:60ch;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .empty{padding:24px;color:#9aa0aa}
+    .meta{font-size:13px;color:#cbd5e1}
+  </style>
+</head>
+<body>
+{{content}}
+</body>
+</html>
+

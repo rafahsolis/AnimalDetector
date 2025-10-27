@@ -1,17 +1,21 @@
 import unittest
 from pathlib import Path
 from unittest.mock import Mock
-from image_server import (
+
+from image_server.server import (
     get_server_ip,
     get_server_port,
     create_server_address,
     assign_root_to_server,
+)
+from image_server.path_utils import (
     is_image_file,
     list_images,
-    ImageRequestHandler,
     is_safe_child,
-    is_child_of_parent
+    is_child_of_parent,
 )
+from image_server.handlers import ImageRequestHandler
+
 
 class TestServerConfiguration(unittest.TestCase):
     def test_get_server_ip_returns_default_when_none(self):
@@ -30,6 +34,7 @@ class TestServerConfiguration(unittest.TestCase):
         result = get_server_port(8080)
         self.assertEqual(result, 8080)
 
+
 class TestServerAddress(unittest.TestCase):
     def test_create_server_address_returns_tuple(self):
         address = create_server_address('127.0.0.1', 8000)
@@ -39,12 +44,14 @@ class TestServerAddress(unittest.TestCase):
         address = create_server_address('0.0.0.0', 9000)
         self.assertIsInstance(address, tuple)
 
+
 class TestServerRoot(unittest.TestCase):
     def test_assign_root_to_server_sets_attribute(self):
         mock_server = Mock()
         root_path = Path('/tmp/images')
         assign_root_to_server(mock_server, root_path)
         self.assertEqual(mock_server.root, root_path)
+
 
 class TestPathSafety(unittest.TestCase):
     def test_is_safe_child_returns_true_for_valid_child(self):
@@ -70,6 +77,7 @@ class TestPathSafety(unittest.TestCase):
         child = Path('/home/user/pictures/photo.jpg')
         result = is_child_of_parent(parent, child)
         self.assertFalse(result)
+
 
 class TestImageFileDetection(unittest.TestCase):
     def test_is_image_file_returns_true_for_jpg(self):
@@ -104,6 +112,7 @@ class TestImageFileDetection(unittest.TestCase):
             file.unlink()
         directory.rmdir()
 
+
 class TestListImages(unittest.TestCase):
     def test_list_images_returns_only_image_files(self):
         temp_dir = Path("test_images")
@@ -121,6 +130,7 @@ class TestListImages(unittest.TestCase):
             file.unlink()
         directory.rmdir()
 
+
 class TestImageRequestHandler(unittest.TestCase):
     def test_get_server_root_returns_server_root_attribute(self):
         handler = self.create_mock_handler()
@@ -137,6 +147,7 @@ class TestImageRequestHandler(unittest.TestCase):
         mock_address = ('127.0.0.1', 8000)
         mock_server = Mock()
         return ImageRequestHandler(mock_request, mock_address, mock_server)
+
 
 if __name__ == "__main__":
     unittest.main()

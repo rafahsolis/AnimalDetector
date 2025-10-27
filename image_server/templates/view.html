@@ -40,10 +40,21 @@
     <div class='muted'>{{position}}</div>
   </form>
   <script>
+    var isKeyboardDelete = false;
     document.addEventListener('keydown', function(e){
       if(e.key==='ArrowLeft'){ e.preventDefault(); window.location='{{prev_url}}'; }
       else if(e.key==='ArrowRight'){ e.preventDefault(); window.location='{{next_url}}'; }
-      else if(e.key==='d' || e.key==='D' || e.key==='Delete'){ e.preventDefault(); document.forms[0].submit(); }
+      else if(e.key==='d' || e.key==='D' || e.key==='Delete'){
+        e.preventDefault();
+        isKeyboardDelete = true;
+        document.forms[0].submit();
+      }
+    });
+    document.forms[0].addEventListener('submit', function(e){
+      if(!isKeyboardDelete && !confirm('Delete "{{name}}"?')) {
+        e.preventDefault();
+      }
+      isKeyboardDelete = false;
     });
   </script>
 </body>

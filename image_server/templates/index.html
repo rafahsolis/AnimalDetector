@@ -10,9 +10,13 @@
     header{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid #1f2937;background:rgba(0,0,0,.25)}
     h1{font-size:16px;margin:0;color:#cbd5e1}
     .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;padding:14px}
-    .card{display:flex;flex-direction:column;gap:8px;text-decoration:none;color:inherit;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:10px;transition:transform .06s,background .2s}
+    .card{display:flex;flex-direction:column;gap:8px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:10px;transition:transform .06s,background .2s,opacity .2s;position:relative}
     .card:hover{background:rgba(255,255,255,.06);transform:translateY(-1px)}
-    .card img{width:100%;height:150px;object-fit:cover;border-radius:8px}
+    .card-link{text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px}
+    .card img{width:100%;height:150px;object-fit:contain;border-radius:8px;background:rgba(0,0,0,.3)}
+    .delete-btn{position:absolute;top:8px;right:8px;background:rgba(220,38,38,.9);color:white;border:none;border-radius:4px;padding:4px;cursor:pointer;font-size:16px;line-height:1;transition:background .2s;z-index:10;width:24px;height:24px;display:flex;align-items:center;justify-content:center}
+    .delete-btn:hover{background:rgba(185,28,28,1)}
+    .delete-btn svg{width:14px;height:14px;fill:currentColor}
     footer{padding:10px 14px;color:#9aa0aa;border-top:1px solid #1f2937;text-align:center}
     .muted{color:#9aa0aa;font-size:12px}
     .empty{padding:24px;color:#9aa0aa}
@@ -25,7 +29,33 @@
     <div class='muted'>Root: {{root_path}}</div>
   </header>
   <main class='grid'>{{content}}</main>
-  <footer>Tip: Use ← / → or D to delete image.</footer>
+  <footer>Tip: Click the trash icon to delete an image.</footer>
+  <script>
+    function deleteImage(event, name, skipConfirm) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (!skipConfirm && !confirm('Delete "' + name + '"?')) return;
+
+      var card = event.target.closest('.card');
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/delete', true);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.onload = function() {
+        if (xhr.status === 303 || xhr.status === 200) {
+          if (card) {
+            card.style.opacity = '0';
+            setTimeout(function() {
+              card.remove();
+            }, 200);
+          } else {
+            window.location.href = '/';
+          }
+        }
+      };
+      xhr.send('name=' + encodeURIComponent(name));
+    }
+  </script>
 </body>
 </html>
 

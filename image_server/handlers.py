@@ -26,6 +26,8 @@ class ImageRequestHandler(BaseHTTPRequestHandler):
 
         if handler:
             handler()
+        elif parsed.path.startswith("/static/"):
+            self.serve_static()
         elif parsed.path == "/favicon.ico":
             self._handle_favicon()
         else:
@@ -80,6 +82,24 @@ class ImageRequestHandler(BaseHTTPRequestHandler):
         if not self._is_accessible_file(file_path):
             self.send_error(404, "Not Found")
             return
+
+        self._send_file_response(file_path)
+
+    def serve_static(self) -> None:
+        parsed = urlparse(self.path)
+        static_path = parsed.path.replace("/static/", "")
+
+        if not self._is_safe_static_path(static_path):
+            self.send_error(404, "Not Found")
+            return
+
+        templates_dir = Path(__file__).parent / "templates"
+        file_path = templates_dir / static_path
+
+        if not file_path.exists() or not file_path.is_file():
+            self.send_error(404, "Not Found")
+            return
+
 
         self._send_file_response(file_path)
 
@@ -188,6 +208,11 @@ class ImageRequestHandler(BaseHTTPRequestHandler):
             "prev": images[prev_index],
             "next": images[next_index],
         }
+    @staticmethod
+    def _is_safe_static_path(static_path: str) -> bool:
+        allowed_files = {"index.css", "view.css"}
+        return static_path in allowed_files
+
 
     def _create_view_context(self, view_data: Dict) -> Dict[str, str]:
         name = view_data["name"]

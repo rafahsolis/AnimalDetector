@@ -1,0 +1,139 @@
+:root {
+  --bg: #0b1020;
+  --muted: #9aa0aa;
+  --text: #e5e7eb;
+}
+
+body {
+  margin: 0;
+  background: #0b1020;
+  color: var(--text);
+  font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #1f2937;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+h1 {
+  font-size: 16px;
+  margin: 0;
+  color: #cbd5e1;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  padding: 14px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 10px;
+  transition: transform 0.06s, background 0.2s, opacity 0.2s;
+  position: relative;
+}
+
+.card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-1px);
+}
+
+.card-link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card img {
+  width: 100%;
+  height: 150px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.delete-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(220, 38, 38, 0.95);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  transition: background 0.2s;
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.delete-btn:hover,
+.delete-btn:active {
+  background: rgba(185, 28, 28, 1);
+}
+
+.delete-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  pointer-events: none;
+}
+
+footer {
+  padding: 10px 14px;
+  color: #9aa0aa;
+  border-top: 1px solid #1f2937;
+  text-align: center;
+}
+
+.muted {
+  color: #9aa0aa;
+  font-size: 12px;
+}
+
+.empty {
+  padding: 24px;
+  color: #9aa0aa;
+}
+
+.meta {
+  font-size: 13px;
+  color: #cbd5e1;
+}
+
+@media (max-width: 768px) {
+  .delete-btn {
+    width: 36px;
+    height: 36px;
+    top: 6px;
+    right: 6px;
+  }
+
+  .delete-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+

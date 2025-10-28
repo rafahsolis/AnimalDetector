@@ -2,6 +2,8 @@
   --bg: #0b1020;
   --muted: #9aa0aa;
   --text: #e5e7eb;
+  --thumb-size: 180px;
+  --thumb-height: 150px;
 }
 
 body {
@@ -11,13 +13,42 @@ body {
   font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
 }
 
+body.size-small {
+  --thumb-size: 180px;
+  --thumb-height: 150px;
+}
+
+body.size-medium {
+  --thumb-size: 280px;
+  --thumb-height: 235px;
+}
+
+body.size-large {
+  --thumb-size: 400px;
+  --thumb-height: 335px;
+}
+
+body.size-xl {
+  --thumb-size: 600px;
+  --thumb-height: 500px;
+}
+
+body.size-xxl {
+  --thumb-size: 800px;
+  --thumb-height: 667px;
+}
+
 header {
+  position: sticky;
+  top: 0;
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 12px 14px;
   border-bottom: 1px solid #1f2937;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(11, 16, 32, 0.95);
+  backdrop-filter: blur(10px);
+  z-index: 100;
 }
 
 h1 {
@@ -26,9 +57,38 @@ h1 {
   color: #cbd5e1;
 }
 
+.size-selector {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.size-btn {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(11, 18, 32, 0.6);
+  color: #9aa0aa;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+
+.size-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+}
+
+.size-btn.active {
+  background: rgba(59, 130, 246, 0.3);
+  border-color: rgba(59, 130, 246, 0.5);
+  color: #60a5fa;
+}
+
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(var(--thumb-size), 1fr));
   gap: 12px;
   padding: 14px;
 }
@@ -60,7 +120,7 @@ h1 {
 
 .card img {
   width: 100%;
-  height: 150px;
+  height: var(--thumb-height);
   object-fit: contain;
   border-radius: 8px;
   background: rgba(0, 0, 0, 0.3);
@@ -134,6 +194,15 @@ footer {
   .delete-btn svg {
     width: 18px;
     height: 18px;
+  }
+
+  .size-selector {
+    gap: 4px;
+  }
+
+  .size-btn {
+    padding: 5px 8px;
+    font-size: 11px;
   }
 }
 

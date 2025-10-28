@@ -156,19 +156,16 @@ class ImageRequestHandler(BaseHTTPRequestHandler):
 
     def _create_image_card(self, name: str) -> str:
         escaped_name = html.escape(name)
-        view_url = f"/view?name={quote(name)}"
-        thumb_url = f"/raw?name={quote(name)}"
         js_escaped_name = escaped_name.replace("'", "\\'")
 
-        trash_icon = '<svg viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/><path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/></svg>'
+        context = {
+            "name": escaped_name,
+            "js_name": js_escaped_name,
+            "view_url": f"/view?name={quote(name)}",
+            "thumb_url": f"/raw?name={quote(name)}",
+        }
 
-        return (
-            f'<div class="card">'
-            f'<button class="delete-btn" onclick="deleteImage(event, \'{js_escaped_name}\', true)" title="Delete">{trash_icon}</button>'
-            f'<a class="card-link" href="{view_url}">'
-            f'<img loading="lazy" src="{thumb_url}" alt="{escaped_name}">'
-            f'<div class="meta">{escaped_name}</div></a></div>'
-        )
+        return self._template_loader.render_template("card.html", context)
 
     def _create_index_context(self, server_root: Path, content: str) -> Dict[str, str]:
         return {
@@ -210,9 +207,8 @@ class ImageRequestHandler(BaseHTTPRequestHandler):
         }
     @staticmethod
     def _is_safe_static_path(static_path: str) -> bool:
-        allowed_files = {"index.css", "view.css", "index.js", "view.js"}
+        allowed_files = {"index.css", "view.css", "index.js", "view.js", "trash.svg"}
         return static_path in allowed_files
-
 
     def _create_view_context(self, view_data: Dict) -> Dict[str, str]:
         name = view_data["name"]

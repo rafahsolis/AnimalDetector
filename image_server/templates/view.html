@@ -24,16 +24,7 @@
     <a class='btn' href='{{next_url}}'>Next ➡</a>
     <div class='muted'>{{position}}</div>
   </form>
-  <script>
-    document.addEventListener('keydown', function(e){
-      if(e.key==='ArrowLeft'){ e.preventDefault(); window.location='{{prev_url}}'; }
-      else if(e.key==='ArrowRight'){ e.preventDefault(); window.location='{{next_url}}'; }
-      else if(e.key==='d' || e.key==='D' || e.key==='Delete'){
-        e.preventDefault();
-        document.forms[0].submit();
-      }
-    });
-  </script>
+  <script src='/static/view.js'></script>
 </body>
 </html>
 

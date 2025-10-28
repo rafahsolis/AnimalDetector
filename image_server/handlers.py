@@ -210,7 +210,7 @@ class ImageRequestHandler(BaseHTTPRequestHandler):
         }
     @staticmethod
     def _is_safe_static_path(static_path: str) -> bool:
-        allowed_files = {"index.css", "view.css"}
+        allowed_files = {"index.css", "view.css", "index.js", "view.js"}
         return static_path in allowed_files
 
 

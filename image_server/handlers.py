@@ -26,6 +26,8 @@ class ImageRequestHandler(BaseHTTPRequestHandler):
 
         if handler:
             handler()
+        elif parsed.path.startswith("/static/"):
+            self.serve_static()
         elif parsed.path == "/favicon.ico":
             self._handle_favicon()
         else:
@@ -83,6 +85,24 @@ class ImageRequestHandler(BaseHTTPRequestHandler):
 
         self._send_file_response(file_path)
 
+    def serve_static(self) -> None:
+        parsed = urlparse(self.path)
+        static_path = parsed.path.replace("/static/", "")
+
+        if not self._is_safe_static_path(static_path):
+            self.send_error(404, "Not Found")
+            return
+
+        templates_dir = Path(__file__).parent / "templates"
+        file_path = templates_dir / static_path
+
+        if not file_path.exists() or not file_path.is_file():
+            self.send_error(404, "Not Found")
+            return
+
+
+        self._send_file_response(file_path)
+
     def handle_delete(self) -> None:
         name = self._extract_delete_target()
 
@@ -131,19 +151,23 @@ class ImageRequestHandler(BaseHTTPRequestHandler):
         if not images:
             return '<div class="empty">No images in this folder.</div>'
 
-        rows = [self._create_image_card(name) for name in images]
+        total = len(images)
+        rows = [self._create_image_card(name, index, total) for index, name in enumerate(images)]
         return "\n".join(rows)
 
-    def _create_image_card(self, name: str) -> str:
+    def _create_image_card(self, name: str, index: int, total: int) -> str:
         escaped_name = html.escape(name)
-        view_url = f"/view?name={quote(name)}"
-        thumb_url = f"/raw?name={quote(name)}"
+        js_escaped_name = escaped_name.replace("'", "\\'")
 
-        return (
-            f'<a class="card" href="{view_url}">'
-            f'<img loading="lazy" src="{thumb_url}" alt="{escaped_name}">'
-            f'<div class="meta">{escaped_name}</div></a>'
-        )
+        context = {
+            "name": escaped_name,
+            "js_name": js_escaped_name,
+            "view_url": f"/view?name={quote(name)}",
+            "thumb_url": f"/raw?name={quote(name)}",
+            "position": f"{index + 1} / {total}",
+        }
+
+        return self._template_loader.render_template("card.html", context)
 
     def _create_index_context(self, server_root: Path, content: str) -> Dict[str, str]:
         return {
@@ -183,6 +207,10 @@ class ImageRequestHandler(BaseHTTPRequestHandler):
             "prev": images[prev_index],
             "next": images[next_index],
         }
+    @staticmethod
+    def _is_safe_static_path(static_path: str) -> bool:
+        allowed_files = {"index.css", "view.css", "index.js", "view.js", "trash.svg"}
+        return static_path in allowed_files
 
     def _create_view_context(self, view_data: Dict) -> Dict[str, str]:
         name = view_data["name"]

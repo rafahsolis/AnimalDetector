@@ -1,4 +1,5 @@
 ultralytics>=8.0.0
-labelImg>=1.8.6
+labelImg==1.8.6
 PyYAML>=6.0
 simple-settings>=1.2.0
+PyQt5==5.15.10

@@ -151,10 +151,11 @@ class ImageRequestHandler(BaseHTTPRequestHandler):
         if not images:
             return '<div class="empty">No images in this folder.</div>'
 
-        rows = [self._create_image_card(name) for name in images]
+        total = len(images)
+        rows = [self._create_image_card(name, index, total) for index, name in enumerate(images)]
         return "\n".join(rows)
 
-    def _create_image_card(self, name: str) -> str:
+    def _create_image_card(self, name: str, index: int, total: int) -> str:
         escaped_name = html.escape(name)
         js_escaped_name = escaped_name.replace("'", "\\'")
 
@@ -163,6 +164,7 @@ class ImageRequestHandler(BaseHTTPRequestHandler):
             "js_name": js_escaped_name,
             "view_url": f"/view?name={quote(name)}",
             "thumb_url": f"/raw?name={quote(name)}",
+            "position": f"{index + 1} / {total}",
         }
 
         return self._template_loader.render_template("card.html", context)

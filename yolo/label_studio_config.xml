@@ -1,0 +1,50 @@
+<View>
+  <Image name="image" value="$image"/>
+  <RectangleLabels name="label" toName="image">
+    <Label value="bird" background="#FF6B6B"/>
+    <Label value="wild_boar" background="#4ECDC4"/>
+    <Label value="rabbit" background="#45B7D1"/>
+    <Label value="roe_deer" background="#96CEB4"/>
+    <Label value="fox" background="#FFEAA7"/>
+    <Label value="human" background="#DFE6E9"/>
+    <Label value="vehicle" background="#636E72"/>
+    <Label value="unknown_animal" background="#A29BFE"/>
+  </RectangleLabels>
+
+  <Choices name="gender" toName="image" choice="single-radio" showInline="true">
+    <Choice value="male"/>
+    <Choice value="female"/>
+    <Choice value="unknown_gender"/>
+  </Choices>
+
+  <Choices name="age_class" toName="image" choice="single-radio" showInline="true">
+    <Choice value="juvenile"/>
+    <Choice value="adult"/>
+    <Choice value="unknown_age"/>
+  </Choices>
+
+  <Choices name="time_of_day" toName="image" choice="single-radio" showInline="true">
+    <Choice value="day"/>
+    <Choice value="night"/>
+    <Choice value="dawn_dusk"/>
+  </Choices>
+
+  <Choices name="behavior" toName="image" choice="multiple">
+    <Choice value="foraging"/>
+    <Choice value="moving"/>
+    <Choice value="resting"/>
+    <Choice value="alert"/>
+    <Choice value="grooming"/>
+    <Choice value="interacting"/>
+  </Choices>
+
+  <Choices name="visibility" toName="image" choice="single-radio" showInline="true">
+    <Choice value="clear"/>
+    <Choice value="partially_occluded"/>
+    <Choice value="heavily_occluded"/>
+    <Choice value="motion_blur"/>
+  </Choices>
+
+  <TextArea name="notes" toName="image" placeholder="Additional observations..." rows="2" maxSubmissions="1"/>
+</View>
+

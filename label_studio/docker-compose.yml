@@ -1,0 +1,19 @@
+services:
+  label-studio:
+    image: heartexlabs/label-studio:latest
+    container_name: animal-detector-label-studio
+    ports:
+      - "8080:8080"
+    volumes:
+      # Mount datasets folder for easy access
+      - ../datasets:/datasets:ro
+      # Persist Label Studio data
+      - ./data:/label-studio/data
+    environment:
+      - LABEL_STUDIO_LOCAL_FILES_SERVING_ENABLED=true
+      - LABEL_STUDIO_LOCAL_FILES_DOCUMENT_ROOT=/datasets
+    restart: unless-stopped
+    user: "${UID:-1000}:${GID:-1000}"
+    stdin_open: true
+    tty: true
+

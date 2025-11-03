@@ -30,7 +30,7 @@ This package provides complete Label Studio integration for annotating camera tr
 
 ```bash
 # 1. Initialize
-python -m yolo.init_dataset my_camera_trap_dataset
+python -m label_studio.init_dataset my_camera_trap_dataset
 
 # 2. Add images
 cp /source/images/*.jpg datasets/my_camera_trap_dataset/images/
@@ -42,14 +42,14 @@ docker run -it -p 8080:8080 -v $(pwd)/label-studio-data:/label-studio/data \
 # 4. Annotate in browser (http://localhost:8080)
 
 # 5. Export and convert
-python -m yolo.label_studio_to_yolo \
+python -m label_studio.converter \
     --json export.json \
     --images datasets/my_camera_trap_dataset/images \
     --labels datasets/my_camera_trap_dataset/labels \
     --classes datasets/my_camera_trap_dataset/labels/classes.txt
 
 # 6. Validate
-python -m yolo.validate_annotations \
+python -m label_studio.validator \
     --images datasets/my_camera_trap_dataset/images \
     --labels datasets/my_camera_trap_dataset/labels \
     --classes datasets/my_camera_trap_dataset/labels/classes.txt
@@ -67,12 +67,15 @@ See [DATASET_MIGRATION.md](DATASET_MIGRATION.md) for migration instructions.
 ## 📁 File Structure
 
 ```
-yolo/
+label_studio/
+├── __init__.py                      # Package initialization
 ├── label_studio_config.xml          # Label Studio UI configuration
-├── label_studio_to_yolo.py          # Converter: JSON → YOLO format
-├── validate_annotations.py          # Dataset quality analysis
+├── converter.py                     # Converter: JSON → YOLO format
+├── validator.py                     # Dataset quality analysis
+└── init_dataset.py                  # Initialize new datasets
+
+yolo/
 ├── generate_data_yaml.py            # Auto-generate training config
-├── init_dataset.py                  # Initialize new datasets
 └── split_dataset.py                 # Split train/val/test (updated)
 
 docs/
@@ -93,7 +96,7 @@ tests/
 Best for: New datasets, high-quality annotations
 
 ```bash
-python -m yolo.init_dataset wildlife_camera_1
+python -m label_studio.init_dataset wildlife_camera_1
 # Add images, annotate in Label Studio, convert
 ```
 
@@ -104,7 +107,7 @@ Best for: Growing datasets, new camera deployments
 ```bash
 # Annotate new batch in Label Studio
 # Export only new annotations
-python -m yolo.label_studio_to_yolo --json new_batch.json ...
+python -m label_studio.converter --json new_batch.json ...
 # Existing annotations are preserved
 ```
 
@@ -128,7 +131,7 @@ Best for: Large datasets, existing model
 
 ## 🛠️ Tools Reference
 
-### `label_studio_to_yolo.py`
+### `converter.py`
 
 **Purpose:** Convert Label Studio JSON export to YOLO format
 
@@ -140,7 +143,7 @@ Best for: Large datasets, existing model
 
 **Usage:**
 ```bash
-python -m yolo.label_studio_to_yolo \
+python -m label_studio.converter \
     --json export.json \
     --images datasets/DATASET/images \
     --labels datasets/DATASET/labels \
@@ -148,7 +151,7 @@ python -m yolo.label_studio_to_yolo \
     [--skip-duplicates]
 ```
 
-### `validate_annotations.py`
+### `validator.py`
 
 **Purpose:** Analyze dataset quality
 
@@ -161,7 +164,7 @@ python -m yolo.label_studio_to_yolo \
 
 **Usage:**
 ```bash
-python -m yolo.validate_annotations \
+python -m label_studio.validator \
     --images datasets/DATASET/images \
     --labels datasets/DATASET/labels \
     --classes datasets/DATASET/labels/classes.txt \
@@ -191,10 +194,10 @@ python -m yolo.generate_data_yaml --dataset DATASET_NAME
 **Usage:**
 ```bash
 # With default classes
-python -m yolo.init_dataset my_dataset
+python -m label_studio.init_dataset my_dataset
 
 # With custom classes
-python -m yolo.init_dataset my_dataset --classes "dog,cat,bird"
+python -m label_studio.init_dataset my_dataset --classes "dog,cat,bird"
 ```
 
 ## 🏗️ Dataset Structure

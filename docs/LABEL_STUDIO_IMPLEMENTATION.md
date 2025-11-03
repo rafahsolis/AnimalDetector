@@ -8,13 +8,13 @@ This implementation adds complete Label Studio integration for annotating images
 
 ### 1. Core Scripts
 
-#### `yolo/label_studio_config.xml`
+#### `label_studio/label_studio_config.xml`
 - Label Studio labeling interface configuration
 - Supports bounding boxes for 8 default classes (bird, wild_boar, rabbit, roe_deer, fox, human, vehicle, unknown_animal)
 - Includes metadata attributes: gender, age_class, time_of_day, behavior, visibility
 - Ready to import into Label Studio project
 
-#### `yolo/label_studio_to_yolo.py`
+#### `label_studio/converter.py`
 - **Main converter**: Label Studio JSON export → YOLO format
 - Features:
   - Automatic duplicate image detection (SHA256 hashing)
@@ -31,7 +31,7 @@ This implementation adds complete Label Studio integration for annotating images
   - `FilePathResolver`: Find images regardless of extension
   - `LabelStudioToYOLOConverter`: Main orchestrator
 
-#### `yolo/validate_annotations.py`
+#### `label_studio/validator.py`
 - **Dataset validator**: Analyzes YOLO annotation quality
 - Generates comprehensive reports:
   - Total images and annotations count
@@ -47,7 +47,7 @@ This implementation adds complete Label Studio integration for annotating images
 - Creates proper YAML structure with train/val/test paths
 - Validates directory structure before generation
 
-#### `yolo/init_dataset.py`
+#### `label_studio/init_dataset.py`
 - **Dataset initializer**: Sets up new dataset structure
 - Creates standardized directory layout
 - Initializes `classes.txt` with defaults or custom classes

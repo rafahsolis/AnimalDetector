@@ -55,7 +55,7 @@ Keep existing dataset as-is and create a new one:
 
 ```bash
 # Initialize new dataset
-python -m yolo.init_dataset fototrampeo_bosque_v2
+python -m label_studio.init_dataset fototrampeo_bosque_v2
 
 # Copy images
 cp datasets/fototrampeo_bosque/images/*.JPG datasets/fototrampeo_bosque_v2/images/
@@ -87,7 +87,7 @@ docker run -it -p 8080:8080 \
 
 1. Create new project: "fototrampeo_bosque"
 2. Go to Settings → Labeling Interface
-3. Copy contents from `yolo/label_studio_config.xml`
+3. Copy contents from `label_studio/label_studio_config.xml`
 4. Save
 
 ### 3. Import Images
@@ -127,7 +127,7 @@ See [LABEL_STUDIO_GUIDE.md](LABEL_STUDIO_GUIDE.md) for detailed annotation guide
 ### 6. Convert to YOLO Format
 
 ```bash
-python -m yolo.label_studio_to_yolo \
+python -m label_studio.converter \
     --json fototrampeo_bosque_export.json \
     --images datasets/fototrampeo_bosque/images \
     --labels datasets/fototrampeo_bosque/labels \
@@ -139,7 +139,7 @@ This creates `.txt` files in `labels/` directory with YOLO format annotations.
 ### 7. Validate Annotations
 
 ```bash
-python -m yolo.validate_annotations \
+python -m label_studio.validator \
     --images datasets/fototrampeo_bosque/images \
     --labels datasets/fototrampeo_bosque/labels \
     --classes datasets/fototrampeo_bosque/labels/classes.txt

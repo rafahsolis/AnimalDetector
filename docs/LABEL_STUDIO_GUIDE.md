@@ -19,37 +19,66 @@ This guide explains how to use Label Studio to annotate images for YOLOv11 train
 
 ## Quick Start
 
-**Complete workflow in 5 steps:**
+**Complete workflow in 3 steps:**
 
 ```bash
-# 1. Set up Label Studio (using Docker)
-docker run -it -p 8080:8080 -v $(pwd)/label-studio-data:/label-studio/data heartexlabs/label-studio:latest
+# 1. Start Label Studio (easiest way)
+cd label_studio
+docker compose up -d
 
-# 2. Create project and annotate (see below)
+# Open http://localhost:8080 and annotate
 
-# 3. Export from Label Studio and convert to YOLO
-python -m yolo.label_studio_to_yolo \
-    --json /path/to/export.json \
+# 2. Export from Label Studio and convert to YOLO
+python -m label_studio.converter \
+    --json export.json \
     --images datasets/fototrampeo_bosque/images \
     --labels datasets/fototrampeo_bosque/labels \
     --classes datasets/fototrampeo_bosque/labels/classes.txt
 
-# 4. Validate annotations
-python -m yolo.validate_annotations \
+# 3. Validate, split, and train
+python -m label_studio.validator \
     --images datasets/fototrampeo_bosque/images \
     --labels datasets/fototrampeo_bosque/labels \
     --classes datasets/fototrampeo_bosque/labels/classes.txt
 
-# 5. Split dataset and train
 python -m yolo.split_dataset --dataset fototrampeo_bosque
+python -m yolo.generate_data_yaml --dataset fototrampeo_bosque
 python -m yolo.train_model
 ```
+
+**See `label_studio/README.md` for detailed setup instructions.**
 
 ---
 
 ## Setup Label Studio
 
-### Option 1: Docker (Recommended)
+### Option 1: Docker Compose (Recommended - Simplest!)
+
+This is the easiest way - datasets are automatically mounted!
+
+```bash
+# Navigate to label_studio folder
+cd /home/rafa/PycharmProjects/AnimalDetector/label_studio
+
+# Start Label Studio (first time and subsequent runs)
+docker compose up -d
+
+# View logs (optional)
+docker compose logs -f
+
+# Stop when done
+docker compose down
+```
+
+Access at: http://localhost:8080
+
+**Benefits:**
+- ✅ Datasets automatically mounted at `/datasets`
+- ✅ Persistent data in `label_studio/data/`
+- ✅ Simple start/stop commands
+- ✅ No complex volume configuration needed
+
+### Option 2: Docker (Manual)
 
 ```bash
 # Pull and run Label Studio
@@ -60,14 +89,14 @@ docker run -it -p 8080:8080 \
 
 Access at: http://localhost:8080
 
-### Option 2: pip install
+### Option 3: pip install
 
 ```bash
 pip install label-studio
 label-studio start
 ```
 
-### Option 3: Managed Service
+### Option 4: Managed Service
 
 Use Label Studio Cloud: https://app.heartex.com/
 
@@ -84,7 +113,22 @@ Use Label Studio Cloud: https://app.heartex.com/
 
 ### Step 2: Import Images
 
-**Method A: Local Storage (Docker)**
+**Method A: Use Mounted Datasets (Docker Compose - Recommended)**
+
+If you started Label Studio with `docker compose`, your datasets are already mounted!
+
+In Label Studio:
+- Go to **Settings** → **Cloud Storage**
+- Click **Add Source Storage** → **Local files**
+- Path: `/datasets/fototrampeo_bosque/images`
+- Click **Add Storage**
+- Click **Sync Storage** to import images
+
+That's it! All images are now available.
+
+**Method B: Local Storage (Manual Docker)**
+
+If using manual Docker setup:
 
 ```bash
 # Copy images to Label Studio data directory
@@ -97,7 +141,7 @@ In Label Studio:
 - Add **Local Files** storage
 - Path: `/label-studio/data/fototrampeo_bosque`
 
-**Method B: Import from Cloud**
+**Method C: Import from Cloud**
 
 Support for:
 - AWS S3
@@ -105,7 +149,7 @@ Support for:
 - Azure Blob Storage
 - Custom HTTP server
 
-**Method C: Upload Directly**
+**Method D: Upload Directly**
 
 - Drag and drop images in the import tab
 - Note: Not recommended for large datasets (2000+ images)
@@ -114,7 +158,7 @@ Support for:
 
 1. Go to **Settings** → **Labeling Interface**
 2. Click **"Code"** (XML editor)
-3. Copy the contents of `yolo/label_studio_config.xml`:
+3. Copy the contents of `label_studio/label_studio_config.xml`:
 
 ```xml
 <View>
@@ -253,7 +297,7 @@ Fill in additional attributes when possible:
 ### Step 2: Convert to YOLO Format
 
 ```bash
-python -m yolo.label_studio_to_yolo \
+python -m label_studio.converter \
     --json /path/to/fototrampeo_bosque_export.json \
     --images datasets/fototrampeo_bosque/images \
     --labels datasets/fototrampeo_bosque/labels \
@@ -297,7 +341,7 @@ Expected output:
 Before training, validate your annotations:
 
 ```bash
-python -m yolo.validate_annotations \
+python -m label_studio.validator \
     --images datasets/fototrampeo_bosque/images \
     --labels datasets/fototrampeo_bosque/labels \
     --classes datasets/fototrampeo_bosque/labels/classes.txt
@@ -339,7 +383,7 @@ Bounding Box Size Distribution:
 **Save report to file:**
 
 ```bash
-python -m yolo.validate_annotations \
+python -m label_studio.validator \
     --images datasets/fototrampeo_bosque/images \
     --labels datasets/fototrampeo_bosque/labels \
     --classes datasets/fototrampeo_bosque/labels/classes.txt \
@@ -422,7 +466,7 @@ echo "deer" >> datasets/fototrampeo_bosque/labels/classes.txt
 3. **Export and convert** new annotations:
 
 ```bash
-python -m yolo.label_studio_to_yolo \
+python -m label_studio.converter \
     --json new_batch_export.json \
     --images datasets/fototrampeo_bosque/images \
     --labels datasets/fototrampeo_bosque/labels \
@@ -501,7 +545,7 @@ git lfs track "datasets/**/*.jpg"
 - Run validation to identify issues:
 
 ```bash
-python -m yolo.validate_annotations ... 2>&1 | grep "Invalid"
+python -m label_studio.validator ... 2>&1 | grep "Invalid"
 ```
 
 ### Issue: Duplicate images detected

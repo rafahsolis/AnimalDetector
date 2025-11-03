@@ -2,7 +2,7 @@ import unittest
 import json
 import tempfile
 from pathlib import Path
-from yolo.label_studio_to_yolo import (
+from label_studio.converter import (
     LabelStudioToYOLOConverter,
     ClassMapper,
     BoundingBoxConverter,

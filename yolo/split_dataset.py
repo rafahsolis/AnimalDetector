@@ -45,12 +45,20 @@ class DatasetPaths:
         self._dataset_root = self.DATASETS_ROOT / dataset_name
 
     @property
+    def dataset_root(self) -> Path:
+        return self._dataset_root
+
+    @property
     def images_source(self) -> Path:
         return self._dataset_root / 'images'
 
     @property
     def labels_source(self) -> Path:
         return self._dataset_root / 'labels'
+
+    @property
+    def classes_file(self) -> Path:
+        return self._dataset_root / 'labels' / 'classes.txt'
 
     @property
     def train_images(self) -> Path:

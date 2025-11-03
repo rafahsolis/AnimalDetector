@@ -4,18 +4,24 @@ Quick command reference for Label Studio annotation workflow.
 
 ## Common Commands
 
-### Initialize New Dataset
+### Start Label Studio
 
+**Docker Compose (Recommended - Simplest!):**
 ```bash
-# Create dataset structure with default classes
-python -m yolo.init_dataset my_dataset_name
+cd label_studio
+docker compose up -d
 
-# Create with custom classes
-python -m yolo.init_dataset my_dataset_name --classes "dog,cat,mouse,bird"
+# Stop
+docker compose down
+
+# View logs
+docker compose logs -f
+
+# Restart
+docker compose restart
 ```
 
-### Start Label Studio (Docker)
-
+**Manual Docker (Alternative):**
 ```bash
 # First time
 docker run -it -p 8080:8080 \
@@ -28,10 +34,12 @@ docker start label-studio
 docker logs -f label-studio
 ```
 
+### Initialize New Dataset
+
 ### Convert Label Studio Export to YOLO
 
 ```bash
-python -m yolo.label_studio_to_yolo \
+python -m label_studio.converter \
     --json /path/to/export.json \
     --images datasets/DATASET_NAME/images \
     --labels datasets/DATASET_NAME/labels \
@@ -42,13 +50,13 @@ python -m yolo.label_studio_to_yolo \
 
 ```bash
 # Print to console
-python -m yolo.validate_annotations \
+python -m label_studio.validator \
     --images datasets/DATASET_NAME/images \
     --labels datasets/DATASET_NAME/labels \
     --classes datasets/DATASET_NAME/labels/classes.txt
 
 # Save to file
-python -m yolo.validate_annotations \
+python -m label_studio.validator \
     --images datasets/DATASET_NAME/images \
     --labels datasets/DATASET_NAME/labels \
     --classes datasets/DATASET_NAME/labels/classes.txt \
@@ -77,7 +85,7 @@ python -m yolo.train_model
 
 ```bash
 # 1. Initialize dataset
-python -m yolo.init_dataset fototrampeo_bosque
+python -m label_studio.init_dataset fototrampeo_bosque
 
 # 2. Copy images
 cp /source/images/* datasets/fototrampeo_bosque/images/
@@ -93,14 +101,14 @@ docker start label-studio
 # Download JSON format → export.json
 
 # 6. Convert to YOLO
-python -m yolo.label_studio_to_yolo \
+python -m label_studio.converter \
     --json export.json \
     --images datasets/fototrampeo_bosque/images \
     --labels datasets/fototrampeo_bosque/labels \
     --classes datasets/fototrampeo_bosque/labels/classes.txt
 
 # 7. Validate
-python -m yolo.validate_annotations \
+python -m label_studio.validator \
     --images datasets/fototrampeo_bosque/images \
     --labels datasets/fototrampeo_bosque/labels \
     --classes datasets/fototrampeo_bosque/labels/classes.txt
@@ -162,7 +170,7 @@ ls datasets/DATASET_NAME/images/ | head
 # vs JSON export image paths
 
 # Try with absolute paths
-python -m yolo.label_studio_to_yolo \
+python -m label_studio.converter \
     --json export.json \
     --images $(pwd)/datasets/DATASET_NAME/images \
     --labels $(pwd)/datasets/DATASET_NAME/labels \
@@ -202,7 +210,7 @@ code datasets/DATASET_NAME/labels/classes.txt
 # (filter by date in export dialog)
 
 # Convert with existing labels (won't overwrite)
-python -m yolo.label_studio_to_yolo \
+python -m label_studio.converter \
     --json new_batch.json \
     --images datasets/DATASET_NAME/images \
     --labels datasets/DATASET_NAME/labels \
@@ -213,13 +221,13 @@ python -m yolo.label_studio_to_yolo \
 
 ```bash
 # Initialize multiple datasets
-python -m yolo.init_dataset camera_1
-python -m yolo.init_dataset camera_2
-python -m yolo.init_dataset camera_3
+python -m label_studio.init_dataset camera_1
+python -m label_studio.init_dataset camera_2
+python -m label_studio.init_dataset camera_3
 
 # Process each separately
 for dataset in camera_1 camera_2 camera_3; do
-    python -m yolo.label_studio_to_yolo \
+    python -m label_studio.converter \
         --json ${dataset}_export.json \
         --images datasets/${dataset}/images \
         --labels datasets/${dataset}/labels \

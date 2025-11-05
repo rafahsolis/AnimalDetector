@@ -40,6 +40,11 @@ runs/
 *.pt
 !yolo/models/*.pt
 
+# Cloudflare Tunnel
+label_studio/.cloudflared/
+label_studio/tunnel.env
+*.pem
+
 # OS
 .DS_Store
 Thumbs.db

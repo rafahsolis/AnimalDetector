@@ -133,17 +133,21 @@ class TestListImages(unittest.TestCase):
 
 class TestImageRequestHandler(unittest.TestCase):
     def test_get_server_root_returns_server_root_attribute(self):
-        handler = self.create_mock_handler()
         mock_server = Mock()
         expected_root = Path('/tmp/test')
         mock_server.root = expected_root
+
+        handler = Mock(spec=ImageRequestHandler)
         handler.server = mock_server
+        handler.get_server_root = ImageRequestHandler.get_server_root.__get__(handler)
+
         result = handler.get_server_root()
         self.assertEqual(result, expected_root)
 
     @staticmethod
     def create_mock_handler() -> ImageRequestHandler:
         mock_request = Mock()
+        mock_request.makefile = Mock(return_value=Mock())
         mock_address = ('127.0.0.1', 8000)
         mock_server = Mock()
         return ImageRequestHandler(mock_request, mock_address, mock_server)

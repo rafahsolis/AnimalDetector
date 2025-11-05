@@ -8,7 +8,7 @@ MODELS_DIR = Path('yolo/models')
 MODEL_PATH = MODELS_DIR / 'yolov8n.pt'
 LOG_FILE = Path('results.csv')
 DETECTION_CONFIDENCE_THRESHOLD = 0.25
-TARGET_ANIMALS = ["rabbit", "fox", "wild_boar", "bird"]
+TARGET_ANIMALS = ["rabbit", "fox", "wild_boar", "bird", "roe_deer"]
 
 LOGGING = {
     'version': 1,

@@ -4,6 +4,7 @@ Animal detection system using YOLO for detecting rabbits, foxes, wild boars, bir
 
 ## Documentation
 
+### Training & Detection
 - **[Quick Start Training Guide](docs/QUICK_START_TRAINING.md)** - Get started training your model in 6 simple steps
 - **[Complete Training Guide](docs/TRAINING_GUIDE.md)** - Comprehensive guide covering dataset preparation, annotation, and training
 - **[Settings Guide](docs/SETTINGS_GUIDE.md)** - Detailed configuration management with `python-simple-settings`
@@ -11,6 +12,13 @@ Animal detection system using YOLO for detecting rabbits, foxes, wild boars, bir
 - **[Dataset Management](docs/DATASET_MANAGEMENT.md)** - Managing datasets with configurable names and templates
 - **[Training FAQ](docs/TRAINING_FAQ.md)** - Common questions and troubleshooting tips
 - **[Training Setup Summary](docs/TRAINING_SETUP_SUMMARY.md)** - Quick reference for training configuration
+
+### Label Studio Annotation ⭐ NEW
+- **[Label Studio Package Overview](docs/README_LABEL_STUDIO.md)** - Complete annotation solution for YOLOv11
+- **[Label Studio Guide](docs/LABEL_STUDIO_GUIDE.md)** - Full workflow: setup, annotate, export, train
+- **[Label Studio Quick Reference](docs/LABEL_STUDIO_QUICK_REF.md)** - Command cheat sheet
+- **[Dataset Migration Guide](docs/DATASET_MIGRATION.md)** - Migrate existing datasets to Label Studio workflow
+- **[Implementation Details](docs/LABEL_STUDIO_IMPLEMENTATION.md)** - Technical documentation
 
 ## Setup
 
